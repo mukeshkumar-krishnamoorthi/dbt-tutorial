@@ -1,0 +1,26 @@
+name: dbt_tutorial_dev
+
+profile: dbt_tutorial_dev
+
+seed-paths: ["seeds"]
+model-paths: ["models"]
+macro-paths: ["macros"]
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+seeds:
+  # Builds seeds into '<your_schema_name>_raw'
+  dbt_tutorial_dev:
+    +schema: raw
+
+models:
+  dbt_tutorial_dev:
+    +static_analysis: strict
+    # Materialize staging models as views, and marts as tables
+    bronze:
+      +materialized: table
+    silver:
+      +materialized: table
+    gold:
+      +materialized: table
