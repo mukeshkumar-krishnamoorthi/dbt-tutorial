@@ -10,17 +10,18 @@ clean-targets:
   - "dbt_packages"
 
 seeds:
-  # Builds seeds into '<your_schema_name>_raw'
   dbt_tutorial_dev:
     +schema: raw
 
 models:
   dbt_tutorial_dev:
     +static_analysis: strict
-    # Materialize staging models as views, and marts as tables
     bronze:
       +materialized: table
+      +schema: bronze
     silver:
       +materialized: table
+      +schema: silver
     gold:
       +materialized: table
+      +schema: gold
