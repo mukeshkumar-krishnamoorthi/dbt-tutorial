@@ -11,7 +11,7 @@ clean-targets:
 
 seeds:
   dbt_tutorial_dev:
-    +schema: raw
+    +schema: bronze
 
 models:
   dbt_tutorial_dev:
