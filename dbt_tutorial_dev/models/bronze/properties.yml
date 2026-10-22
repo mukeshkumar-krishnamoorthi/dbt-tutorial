@@ -4,6 +4,15 @@ models:
   - name: bronze_customer
     config:
       materialized: table
+    columns:
+      - name: customer_sk
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_code
+        data_tests:
+          - unique
+          - not_null
 
   - name: bronze_date
     config:
@@ -20,7 +29,76 @@ models:
   - name: bronze_sales
     config:
       materialized: table
+    columns:
+      - name: sales_id
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_sk
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref("bronze_customer")
+                field: customer_sk
+      - name: store_sk
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref("bronze_store")
+                field: store_sk
+      - name: product_sk
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref("bronze_product")
+                field: product_sk
+      - name: date_sk
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref("bronze_date")
+                field: date_sk
+      - name: gross_amount
+        data_tests:
+          - generic_non_negative
+      - name: net_amount
+        data_tests:
+          - generic_non_negative
 
   - name: bronze_store
     config:
       materialized: table
+    columns:
+      - name: store_sk
+        data_tests:
+          - unique
+          - not_null
+      - name: store_code
+        data_tests:
+          - unique
+          - not_null
+      - name: store_name
+        data_tests:
+          - accepted_values:
+              arguments:
+                values:
+                  [
+                    "MegaMart Manhattan",
+                    "MegaMart Brooklyn",
+                    "MegaMart Austin",
+                    "MegaMart San Jose",
+                    "MegaMart Toronto",
+                  ]
+              config:
+                severity: warn
+      - name: country
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["USA", "Canada"]
+              config:
+                severity: warn
