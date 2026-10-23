@@ -10,3 +10,12 @@ dbt_tutorial_dev:
       token: "{{ env_var('DATABRICKS_TOKEN') }}"
       auth_type: token
       threads: 16
+    prod:
+      type: databricks
+      database: dbt_tutorial_prod
+      schema: default
+      host: dbc-2ba3d973-edb2.cloud.databricks.com
+      http_path: /sql/1.0/warehouses/bd82b632df9e71dc
+      token: "{{ env_var('DATABRICKS_TOKEN') }}"
+      auth_type: token
+      threads: 16
